@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Film Library</string>
+    <string name="internetError">There was a problem with the network, try again later</string>
+    <string name="unknownError">Ops! Something has occurred, try again later</string>
+    <string name="empty_movies_message">There are not movies yet</string>
 </resources>

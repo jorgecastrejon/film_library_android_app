@@ -27,10 +27,10 @@ internal abstract class BaseActivity : AppCompatActivity(), BaseContract.View {
     open fun update() {}
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }
