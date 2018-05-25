@@ -13,4 +13,11 @@ internal interface Repository {
      * Get the movies
      */
     fun getMovies(): Result<List<Movie>, DomainError>
+
+    /**
+     * Get the movie by id
+     *
+     * @param movieId
+     */
+    fun getMovieById(movieId: Int): Result<Movie, DomainError>
 }

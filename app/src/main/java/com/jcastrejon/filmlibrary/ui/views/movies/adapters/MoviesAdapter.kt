@@ -20,8 +20,7 @@ internal class MoviesAdapter (private val func: (Int) -> Unit): RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val book = movies[position]
-        holder.setMovie(book)
+        holder.setMovie(movies[position])
     }
 
     override fun getItemCount(): Int = movies.size

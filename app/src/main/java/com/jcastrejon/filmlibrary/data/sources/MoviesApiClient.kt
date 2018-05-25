@@ -42,4 +42,15 @@ internal class MoviesApiClient(baseEndpoint: String = BASE_API_URL): MoviesDataS
     } catch (e: IOException) {
         Error(InternetError)
     }
+
+    override fun getMovieById(movieId: Int): Result<Movie, DomainError> = try {
+        val response = apiService.getMovieById(movieId.toString()).execute()
+
+        when {
+            response.isSuccessful && response.body() != null -> Success(convertToDomain(response.body()!!))
+            else -> Error(UnknownError)
+        }
+    } catch (e: IOException) {
+        Error(InternetError)
+    }
 }

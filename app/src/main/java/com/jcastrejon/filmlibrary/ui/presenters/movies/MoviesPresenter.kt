@@ -11,7 +11,8 @@ import kotlinx.coroutines.experimental.launch
 /**
  * Presenter of the Movies Activity
  */
-internal open class MoviesPresenter(private val view: MoviesContract.View, private val getMovies: GetMoviesUseCase): MoviesContract.Presenter {
+internal open class MoviesPresenter(private val view: MoviesContract.View,
+                                    private val getMovies: GetMoviesUseCase): MoviesContract.Presenter {
 
     override fun update() {
         view.showProgress()

@@ -11,29 +11,49 @@ internal class MoviesRepository (private val remoteDataSource: MoviesDataSource)
 
     companion object {
         private const val ACCEPTABLE_TIME = 30 * 1000
+        private var INSTANCE: MoviesRepository? = null
+
+        /**
+         * Returns a instance of this class
+         *
+         * @param dataSource
+         */
+        fun getInstance(dataSource: MoviesDataSource): MoviesRepository {
+            return INSTANCE ?: MoviesRepository(dataSource).apply { INSTANCE = this }
+        }
     }
 
-    private val cache: MutableList<Movie> = ArrayList()
+    private val cache: LinkedHashMap<Int, Movie> = LinkedHashMap()
     private var lastUpdate = 0L
 
     override fun getMovies(): Result<List<Movie>, DomainError> =
         if (cache.isEmpty() || !isCacheUpdated()) {
             val moviesResult = remoteDataSource.getMovies()
 
-            if (moviesResult is Success) {
-                populateResult(moviesResult.value)
+            moviesResult.also {
+                if (moviesResult is Success) {
+                    populateMovies(moviesResult.value)
+                }
             }
-            moviesResult
         } else {
-            Success(cache)
+            Success(ArrayList(cache.values))
+        }
+
+    override fun getMovieById(movieId: Int): Result<Movie, DomainError> =
+        if (cache.isEmpty() || !cache.containsKey(movieId) || !isCacheUpdated()) {
+            remoteDataSource.getMovieById(movieId)
+        } else {
+            cache[movieId]?.let { Success(cache[movieId]!!) } ?: Error(UnknownError)
         }
 
     /**
      * Replace the cache data and update the lastUpdate var
+     *
+     * @param movies
      */
-    private fun populateResult(movies: List<Movie>) {
+    private fun populateMovies(movies: List<Movie>) {
         cache.clear()
-        cache.addAll(movies)
+        cache.putAll(movies.map { movie -> movie.id to movie })
         lastUpdate = System.currentTimeMillis()
     }
 

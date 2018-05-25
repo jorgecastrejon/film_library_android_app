@@ -13,4 +13,9 @@ internal interface MoviesDataSource {
      * Get the movies
      */
     fun getMovies(): Result<List<Movie>, DomainError>
+
+    /**
+     * Get a movie its id
+     */
+    fun getMovieById(movieId: Int): Result<Movie, DomainError>
 }
